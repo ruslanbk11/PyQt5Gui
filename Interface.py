@@ -53,7 +53,7 @@ class Window(QtWidgets.QMainWindow):
                                                     QtWidgets.QMessageBox.Cancel,
                                                     QtWidgets.QMessageBox.Cancel)
             if result == QtWidgets.QMessageBox.Yes:
-                self.saveToFile()
+                self.saveFile()
                 event.accept()
             elif result == QtWidgets.QMessageBox.No:
                 event.accept()
