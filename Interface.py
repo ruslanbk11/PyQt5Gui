@@ -7,6 +7,7 @@ class Window(QtWidgets.QMainWindow):
         QtWidgets.QWidget.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.closeCheck = False
 
         self.setGeometry(50, 50, 550, 420)
         self.setWindowTitle('Interface')
@@ -26,8 +27,8 @@ class Window(QtWidgets.QMainWindow):
         #painter.begin(self)
         #painter.drawImage(0, 0, image)
         #painter.end()
-
         self.ui.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
+        self.closeCheck = True
 
     def saveFile(self):
         options = QtWidgets.QFileDialog.Options()
@@ -39,23 +40,27 @@ class Window(QtWidgets.QMainWindow):
             self.image = self.pixmap.toImage()
             if self.image.save(self.fileName,'png'):
                 self.ui.statusbar.showMessage('Saved to %s' %self.fileName)
+                self.closeCheck = False
             else:
                 self.ui.statusbar.showMessage('!!! File is NOT saved !!!')
      
     def closeEvent(self, event):
-        result = QtWidgets.QMessageBox.question(self, "Confirm action",
-                                                "Save before quit?",
-                                                QtWidgets.QMessageBox.Yes |
-                                                QtWidgets.QMessageBox.No |
-                                                QtWidgets.QMessageBox.Cancel,
-                                                QtWidgets.QMessageBox.Cancel)
-        if result == QtWidgets.QMessageBox.Yes:
-            self.saveToFile()
-            event.accept()
-        elif result == QtWidgets.QMessageBox.No:
-            event.accept()
+        if self.closeCheck:
+            result = QtWidgets.QMessageBox.question(self, "Confirm action",
+                                                    "Save before quit?",
+                                                    QtWidgets.QMessageBox.Yes |
+                                                    QtWidgets.QMessageBox.No |
+                                                    QtWidgets.QMessageBox.Cancel,
+                                                    QtWidgets.QMessageBox.Cancel)
+            if result == QtWidgets.QMessageBox.Yes:
+                self.saveToFile()
+                event.accept()
+            elif result == QtWidgets.QMessageBox.No:
+                event.accept()
+            else:
+                event.ignore()
         else:
-            event.ignore()
+            event.accept()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
