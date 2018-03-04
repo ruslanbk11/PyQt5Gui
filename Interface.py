@@ -33,12 +33,13 @@ class Window(QtWidgets.QMainWindow):
     def saveFile(self):
         options = QtWidgets.QFileDialog.Options()
         self.fileName, _ = QtWidgets.QFileDialog.getSaveFileName(self, "Save to file",
-                                              "", "Image file(*.png)",
+                                              "", "Image file(*.png *.jpg)",
                                               options=options)
         if self.fileName:
+            fileFormat = self.fileName[-3] + self.fileName[-2] + self.fileName[-1]
             self.pixmap = self.ui.label.pixmap()
             self.image = self.pixmap.toImage()
-            if self.image.save(self.fileName,'png'):
+            if self.image.save(self.fileName, fileFormat):
                 self.ui.statusbar.showMessage('Saved to %s' %self.fileName)
                 self.closeCheck = False
             else:
