@@ -22,14 +22,15 @@ class Window(QtWidgets.QMainWindow):
         self.file,_=QtWidgets.QFileDialog.getOpenFileName(None,'OpenFile','',
                                                            "Image file(*.png *.jpg)",
                                                            options=options)
-        self.image = QtGui.QPixmap(self.file)
-        #self.ui.label.setPixmap(self.image)
-        self.resize(self.image.size())
-        self.ui.scene = QtWidgets.QGraphicsScene()
-        self.ui.scene.addPixmap(self.image)
-        self.ui.graphicsView.setScene(self.ui.scene)
-        #self.ui.graphicsView.resize(self.image.width() + 2, self.image.height() + 2)
-        self.closeCheck = True
+        if self.file:
+            self.image = QtGui.QPixmap(self.file)
+            #self.ui.label.setPixmap(self.image)
+            self.resize(self.image.size())
+            self.ui.scene = QtWidgets.QGraphicsScene()
+            self.ui.scene.addPixmap(self.image)
+            self.ui.graphicsView.setScene(self.ui.scene)
+            #self.ui.graphicsView.resize(self.image.width() + 2, self.image.height() + 2)
+            self.closeCheck = True
 
     def saveFile(self):
         options = QtWidgets.QFileDialog.Options()
